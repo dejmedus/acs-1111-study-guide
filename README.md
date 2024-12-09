@@ -110,19 +110,19 @@ print(result)
 ```
 
 ### Function Arguments
-Different types of function arguments include: **default**, **keyword**, **arbitrary**, and **keyword arbitrary** arguments
+Different types of function arguments include: **positional**, **default**, **keyword**, **arbitrary**, and **keyword arbitrary** arguments
 
 ```python
-def area(width, height): # default args
+def area(width, height): # positional args
     return width * height
 
 area(5, 6)  # must be passed in order
 
-def area(width=5, height=5): # keyword args
+def area(width=5, height=5): # default args
     return width * height
 
-area()  # default values 5, 5 are used
-area(height=6, width=5)  # can be passed in any order
+area()  # default arg values 5, 5 are used
+area(height=6, width=5)  # keyword args can be passed in any order
 
 def area(*args):  # arbitrary args
     return args[0] * args[1]
@@ -134,7 +134,7 @@ def area(**kwargs):  # arbitrary keyword args
     return kwargs["width"] * kwargs["height"]
 
 area(height=6, width=5)  # can pass any number of keyword args in any order
-area(width=5 potatos=round height=6) # potatoes is unused
+area(width=5 potatos='round' height=6) # potatoes is unused
 ```
 
 ## Classes  
