@@ -42,6 +42,55 @@ for key, value in person.items():  # loop
     print(key, value)
 ```
 
+### Scope
+Determines the accessibility of variables, includes: **local**, **enclosing**, and **global**
+
+``` python
+x = 10  # global var
+scope = "global"
+
+def outer():
+    y = 20  # enclosing var
+    scope = "enclosing"
+    
+    def inner():
+        z = 30  # local var
+        scope = "local"
+        print(x, y, z)  # can access all higher scopes
+        print(scope)  # local
+        
+    inner()
+    print(x, y)  # z doesnt exist in enclosing scope
+    print(scope)  # enclosing
+
+outer()
+print(x)  # y and z dont exist in global scope
+print(scope)  # global
+```
+
+#### Scope Modifiers
+`global` and `nonlocal` can be used to modify the scope of variables
+
+``` python
+global_count = 0 # global var
+
+def outer():
+    enclosing_count = 0  # enclosing var
+
+    global global_count  # modifies global var
+    global_count += 1
+    
+    def inner():
+        nonlocal enclosing_count
+        enclosing_count += 1  # modifies enclosing var
+    
+    inner()
+    print(enclosing_count)  # 1
+
+outer()
+print(global_count)  # 1
+```
+
 ## Importing Modules  
 
 ``` python
@@ -122,7 +171,7 @@ class Person:
         cls.species = "homo sapien"
         return f"I am a {cls.species}"
 
-    @staticmethod # helper method that does use or effect class attributes
+    @staticmethod # helper method that doesnt use or change class attributes
     def name_generator(letter):
         if letter == "a":
             return "arthur"
