@@ -1,1 +1,277 @@
-# acs-1111-study-guide
+# ACS 1111 Study Guide
+
+## Basics
+
+### Naming
+``` python
+var_names # snake_case
+CONSTANT_VAR # UPPERCASE
+
+ClassNames # PascalCase
+_protected_class_attribute # single underscore
+__private_class_attribute # double underscore
+```
+
+### Variables  
+
+```python
+name = "Alice"  # string
+age = 25        # int
+height = 5.5    # float
+```
+
+### Lists  
+
+```python
+fruits = ["apple", "banana"]  # list
+fruits[0] # get
+fruits.append("cherry")  # add
+fruits.remove("banana")  # remove
+for fruit in fruits:  # loop
+    print(fruit)
+```
+
+### Dictionaries
+
+``` python
+person = { "name": "Alice", "age": 25 }  # dict
+person["name"]  # get
+person["city"] = "New York"  # add
+del person["age"]  # remove
+for key, value in person.items():  # loop
+    print(key, value)
+```
+
+## Importing Modules  
+
+``` python
+
+from math import sqrt  # import a function
+from random import *   # import all functions
+```
+
+## Functions  
+
+```python
+def add(a, b): 
+    return a + b 
+
+result = add(5, 3)
+print(result)
+```
+
+### Function Arguments
+Different types of function arguments include: **default**, **keyword**, **arbitrary**, and **keyword arbitrary** arguments
+
+```python
+def area(width, height): # default args
+    return width * height
+
+area(5, 6)  # must be passed in order
+
+def area(width=5, height=5): # keyword args
+    return width * height
+
+area()  # default values 5, 5 are used
+area(height=6, width=5)  # can be passed in any order
+
+def area(*args):  # arbitrary args
+    return args[0] * args[1]
+
+area(5, 6)  # can pass any number of args
+area(5, 6, 7, 8) # args[2] and args[3] are unused
+
+def area(**kwargs):  # arbitrary keyword args
+    return kwargs["width"] * kwargs["height"]
+
+area(height=6, width=5)  # can pass any number of keyword args in any order
+area(width=5 potatos=round height=6) # potatoes is unused
+```
+
+## Classes  
+`self` refers to the current instance
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        self._protected = True 
+        self.__private = True 
+
+    def greet(self):  
+        return f"Hi, I'm {self.name}"
+
+person = Person("Alice", 25)
+print(person.greet())
+```
+
+### Methods
+ Different types of methods include: **instance methods**, **class methods**, and **static methods**
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    # instance method belongs to the instance
+    def greet(self): # self refers to the instance
+        return f"Hi, I'm {self.name}"
+
+    @classmethod # belongs to the class not instance
+    def info(cls): # cls not self
+        cls.species = "homo sapien"
+        return f"I am a {cls.species}"
+
+    @staticmethod # helper method that does use or effect class attributes
+    def name_generator(letter):
+        if letter == "a":
+            return "arthur"
+        else:
+            return "sam"
+```
+
+### Abstract Classes
+Blueprints for other classes, cannot be instantiated directly, must be inherited. **Abstract methods** must be overridden by whatever inherits the abstract class.
+
+``` python
+from abc import ABC, abstractmethod 
+
+class Animal(ABC): # cant be instantiated, must be inherited
+ def __init__(self, name, age):
+   self.name = name
+   self.age = age
+
+ @abstractmethod # must be overridden by subclass
+ def sleep(self):
+   pass
+```
+
+
+## Inheritance  
+Allows a class to inherit from another. **super** initializes the parent class.  
+
+```python
+class Animal: # base class
+    def __init__(self, species):
+        self.species = species
+
+class Dog(Animal): # subclass
+    def __init__(self, name):
+        super().__init__("Dog")  # passes init args to base class
+        self.name = name
+
+dog = Dog("Buddy")
+print(dog.species, dog.name) # Dog Buddy
+```
+
+### Overriding/Polymorphism 
+When the subclass overrides a base/parent class method.
+
+```python
+class Animal:
+    def speak(self):  # parent class method
+        return "Some sound"
+
+class Dog(Animal):
+    def speak(self):  # overridden method
+        return "Bark"
+
+animals = [Dog(), Animal()]
+for animal in animals:
+    print(animal.speak())  # Bark, Some sound
+```
+
+### Multiple Inheritance
+A class can inherit from multiple classes
+
+``` python
+class Mammal: # base class
+    def __init__(self, color):
+        self.color = color 
+
+class WingedAnimal: # mixin class (implements a single, well defined feature)
+    def __init__(self):
+        print('I have wings')
+
+class Bat(Mammal, WingedAnimal):  # subclass with multiple inheritance
+    def __init__(self):
+        Mammal.__init__(self, 'brown')  # call each class init method
+        WingedAnimal.__init__(self)     
+        print('I\'m a bat')
+
+bat = Bat()  # I have wings, I'm a bat
+help(Bat)  # shows the MRO (Method Resolution Order) Bat -> Mammal -> WingedAnimal -> object
+```
+
+## Decorators
+A function that wraps and extends another function without modifying it (syntactic sugar)
+
+``` python
+def my_decorator(func):
+    def wrapper(*args, **kwargs):  # *args, **kwargs so it can take in any args
+        print("1 Hi.")
+        func()
+        print("3 Hey.")
+    return wrapper
+
+@my_decorator  # decorates the say_hello function
+def say_hello():
+    print("2 Hello!")
+
+say_hello()  # 1 Hi. 2 Hello! 3 Hey.
+```
+
+## Closures
+A nested function that accesses variables from its enclosing scope. The inner function remembers variables even after the outer function has finished execution
+
+``` python
+def outer_function(msg):
+    def inner_function():  # a closure
+        print(msg)  # references msg from the outer function's scope
+    return inner_function 
+
+hi_func = outer_function('hi')
+hi_func()  #  hi
+```
+
+## Manipulating Built-ins
+
+### Magic Methods (Dunder Methods)
+Built in methods that are not usually meant to be called by us but we can override some of them to change their behavior
+
+``` python
+class Animal:
+    animal_count = 0
+
+    def __init__(self, name): # creates class instance
+        self._name = name 
+        Animal.animal_count += 1
+
+    def __str__(self): # string representation (shown on print)
+        return f"Hi I'm {self._name})"
+
+    def __repr__(self): # representation (how to use the class)
+        return f"Animal({self._name})"
+
+
+animal = Animal("Buddy") # new instance animal
+print(animal)  # __str__ Hi I'm Buddy
+print(repr(animal)) # __repr__ Animal(Buddy)
+```
+
+### Inheriting from Built-in Classes
+Built-in classes like list, dict, and tuple can be extended/inherited from.
+
+``` python
+class IntFloatList(list):  # inherits list methods
+    def append(self, inpuut):
+        if isinstance(inpuut, (int, float)): 
+            super().append(inpuut) # calls method from super() directly
+        else:
+            print("Only integers or floats are allowed")
+
+my_list = IntFloatList()
+my_list.append(3.14) 
+my_list.append("text")  # Only integers or floats are allowed
+print(my_list)  # [3.14]
+```
