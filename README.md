@@ -138,7 +138,7 @@ area(width=5 potatos=round height=6) # potatoes is unused
 ```
 
 ## Classes  
-`self` refers to the current instance
+Blueprints for creating objects. They define **attributes (variables)** and **methods (functions)** that objects instantiated from the class will have. **self** refers to the object instance
 
 ```python
 class Person:
