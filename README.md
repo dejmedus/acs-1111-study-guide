@@ -166,17 +166,22 @@ class Person:
     def greet(self): # self refers to the instance
         return f"Hi, I'm {self.name}"
 
-    @classmethod # belongs to the class not instance
+    @classmethod # belongs to the class not the instance
     def info(cls): # cls not self
         cls.species = "homo sapien"
-        return f"I am a {cls.species}"
+        print(f"I am a {cls.species}")
 
-    @staticmethod # helper method that doesnt use or change class attributes
-    def name_generator(letter):
+    @staticmethod # helper method that belongs to the class, but doesnt use attributes
+    def name_generator(letter): # doesnt take on cls or self
         if letter == "a":
-            return "arthur"
+            print("Arthur")
         else:
-            return "sam"
+            print("Sam")
+
+    person = Person('Bob')
+    person.greet()  # Hi, I'm Bob
+    Person.info()   # I am a homo sapien
+    Person.name_generator('a') # Arthur
 ```
 
 ### Abstract Classes
