@@ -37,7 +37,7 @@ for fruit in fruits:  # loop
 person = { "name": "Alice", "age": 25 }  # dict
 person["name"]  # get
 person["city"] = "New York"  # add
-del person["age"]  # remove
+person.pop("age", None)  # remove
 for key, value in person.items():  # loop
     print(key, value)
 ```
@@ -47,25 +47,25 @@ Determines the accessibility of variables, includes: **local**, **enclosing**, a
 
 ``` python
 x = 10  # global var
-scope = "global"
+what_scope = "global"
 
 def outer():
     y = 20  # enclosing var
-    scope = "enclosing"
+    what_scope = "enclosing"
     
     def inner():
         z = 30  # local var
-        scope = "local"
+        what_scope = "local"
         print(x, y, z)  # can access all higher scopes
-        print(scope)  # local
+        print(what_scope)  # local
         
     inner()
     print(x, y)  # z doesnt exist in enclosing scope
-    print(scope)  # enclosing
+    print(what_scope)  # enclosing
 
 outer()
 print(x)  # y and z dont exist in global scope
-print(scope)  # global
+print(what_scope)  # global
 ```
 
 #### Scope Modifiers
@@ -134,7 +134,7 @@ def area(**kwargs):  # arbitrary keyword args
     return kwargs["width"] * kwargs["height"]
 
 area(height=6, width=5)  # can pass any number of keyword args in any order
-area(width=5 potatos='round' height=6) # potatoes is unused
+area(width=5, potatos='round', height=6) # potatoes is unused
 ```
 
 ## Classes  
@@ -178,10 +178,10 @@ class Person:
         else:
             print("Sam")
 
-    person = Person('Bob')
-    person.greet()  # Hi, I'm Bob
-    Person.info()   # I am a homo sapien
-    Person.name_generator('a') # Arthur
+person = Person('Bob')
+person.greet()  # Hi, I'm Bob
+Person.info()   # I am a homo sapien
+Person.name_generator('a') # Arthur
 ```
 
 ### Abstract Classes
@@ -191,13 +191,13 @@ Blueprints for other classes, cannot be instantiated directly, must be inherited
 from abc import ABC, abstractmethod 
 
 class Animal(ABC): # cant be instantiated, must be inherited
- def __init__(self, name, age):
-   self.name = name
-   self.age = age
-
- @abstractmethod # must be overridden by subclass
- def sleep(self):
-   pass
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    @abstractmethod # must be overridden by subclass
+    def sleep(self):
+        pass
 ```
 
 
