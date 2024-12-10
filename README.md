@@ -227,7 +227,7 @@ class Animal:
         return "Some sound"
 
 class Dog(Animal):
-    def speak(self):  # overridden method
+    def speak(self):  # overrides the parent class method
         return "Bark"
 
 animals = [Dog(), Animal()]
